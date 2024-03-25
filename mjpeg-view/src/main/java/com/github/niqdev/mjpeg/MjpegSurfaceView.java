@@ -17,6 +17,8 @@ public class MjpegSurfaceView extends SurfaceView implements SurfaceHolder.Callb
     // issue in attrs.xml - verify reserved keywords
     private static final SparseArray<Mjpeg.Type> TYPE;
 
+
+
     static {
         TYPE = new SparseArray<>();
         TYPE.put(0, Mjpeg.Type.DEFAULT);
@@ -73,24 +75,34 @@ public class MjpegSurfaceView extends SurfaceView implements SurfaceHolder.Callb
             typedArray.recycle();
         }
     }
-
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
-        ((AbstractMjpegView) mMjpegView).onSurfaceCreated(holder);
+        mMjpegView.onSurfaceCreated(holder);
     }
-
+    @Override
+    public void onSurfaceCreated(SurfaceHolder holder) {
+        mMjpegView.onSurfaceCreated(holder);
+    }
+    @Override
+    public void onSurfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+        mMjpegView.onSurfaceChanged(holder, format, width, height);
+    }
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-        ((AbstractMjpegView) mMjpegView).onSurfaceChanged(holder, format, width, height);
+        mMjpegView.onSurfaceChanged(holder, format, width, height);
     }
 
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
-        ((AbstractMjpegView) mMjpegView).onSurfaceDestroyed(holder);
+        mMjpegView.onSurfaceDestroyed(holder);
+    }
+    @Override
+    public void onSurfaceDestroyed(SurfaceHolder holder) {
+        mMjpegView.onSurfaceDestroyed(holder);
     }
 
     @Override
-    public void setSource(@NonNull MjpegInputStreamDefault stream) {
+    public void setSource(@NonNull MjpegInputStream stream) {
         mMjpegView.setSource(stream);
     }
 

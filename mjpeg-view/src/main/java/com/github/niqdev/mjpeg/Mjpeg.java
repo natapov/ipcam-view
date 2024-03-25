@@ -100,13 +100,13 @@ public class Mjpeg {
     }
 
     @NonNull
-    private Observable<MjpegInputStreamDefault> connect(String url) {
+    private Observable<MjpegInputStream> connect(String url) {
         return Observable.defer(() -> {
             try {
                 HttpURLConnection urlConnection = (HttpURLConnection) new URL(url).openConnection();
                 loadConnectionProperties(urlConnection);
                 InputStream inputStream = urlConnection.getInputStream();
-                return Observable.just(new MjpegInputStreamDefault(inputStream));
+                return Observable.just(new MjpegInputStream(inputStream));
             } catch (IOException e) {
                 Log.e(TAG, "error during connection", e);
                 return Observable.error(e);
@@ -120,7 +120,7 @@ public class Mjpeg {
      * @param url source
      * @return Observable Mjpeg stream
      */
-    public Observable<MjpegInputStreamDefault> open(String url) {
+    public Observable<MjpegInputStream> open(String url) {
         return connect(url)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
@@ -133,7 +133,7 @@ public class Mjpeg {
      * @param timeout in seconds
      * @return Observable Mjpeg stream
      */
-    public Observable<MjpegInputStreamDefault> open(String url, int timeout) {
+    public Observable<MjpegInputStream> open(String url, int timeout) {
         return connect(url)
                 .timeout(timeout, TimeUnit.SECONDS)
                 .subscribeOn(Schedulers.io())

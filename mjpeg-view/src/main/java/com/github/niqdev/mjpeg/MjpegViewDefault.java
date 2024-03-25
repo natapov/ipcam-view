@@ -27,7 +27,7 @@ import androidx.annotation.NonNull;
  * <p/>
  * https://code.google.com/archive/p/android-camera-axis
  */
-public class MjpegViewDefault extends AbstractMjpegView {
+public class MjpegViewDefault implements MjpegView {
     private static final String TAG = MjpegViewDefault.class.getSimpleName();
 
     private final SurfaceHolder.Callback mSurfaceHolderCallback;
@@ -35,7 +35,7 @@ public class MjpegViewDefault extends AbstractMjpegView {
     private final boolean transparentBackground;
 
     private MjpegViewThread thread;
-    private MjpegInputStreamDefault mIn = null;
+    private MjpegInputStream mIn = null;
     private boolean showFps = false;
     private boolean flipHorizontal = false;
     private boolean flipVertical = false;
@@ -51,9 +51,16 @@ public class MjpegViewDefault extends AbstractMjpegView {
     private int dispHeight;
     private int displayMode;
     private boolean resume = false;
-
     private OnFrameCapturedListener onFrameCapturedListener;
 
+    public final int  POSITION_UPPER_LEFT = 9;
+    public final int  POSITION_UPPER_RIGHT = 3;
+    public final int  POSITION_LOWER_LEFT = 12;
+    public final int  POSITION_LOWER_RIGHT = 6;
+    public final int  SIZE_STANDARD = 1;
+    public final int  SIZE_BEST_FIT = 4;
+    public final int  SIZE_SCALE_FIT = 16;
+    public final int  SIZE_FULLSCREEN = 8;
     MjpegViewDefault(SurfaceView surfaceView, SurfaceHolder.Callback callback, boolean transparentBackground) {
         this.mSurfaceView = surfaceView;
         this.mSurfaceHolderCallback = callback;
@@ -92,8 +99,8 @@ public class MjpegViewDefault extends AbstractMjpegView {
             overlayTextColor = Color.WHITE;
             overlayBackgroundColor = Color.BLACK;
             backgroundColor = Color.BLACK;
-            ovlPos = MjpegViewDefault.POSITION_LOWER_RIGHT;
-            displayMode = MjpegViewDefault.SIZE_STANDARD;
+            ovlPos = this.POSITION_LOWER_RIGHT;
+            displayMode = this.SIZE_STANDARD;
             dispWidth = mSurfaceView.getWidth();
             dispHeight = mSurfaceView.getHeight();
         }
@@ -193,7 +200,7 @@ public class MjpegViewDefault extends AbstractMjpegView {
     /*
      * @see https://github.com/niqdev/ipcam-view/issues/14
      */
-    void _setSource(MjpegInputStreamDefault source) {
+    void _setSource(MjpegInputStream source) {
         mIn = source;
         // make sure resume is calling _resumePlayback()
         if (!resume) {
@@ -241,7 +248,7 @@ public class MjpegViewDefault extends AbstractMjpegView {
     }
 
     @Override
-    public void setSource(@NonNull MjpegInputStreamDefault stream) {
+    public void setSource(@NonNull MjpegInputStream stream) {
         _setSource(stream);
     }
 
@@ -364,12 +371,12 @@ public class MjpegViewDefault extends AbstractMjpegView {
 
             int tempx;
             int tempy;
-            if (displayMode == MjpegViewDefault.SIZE_STANDARD) {
+            if (displayMode == SIZE_STANDARD) {
                 tempx = (dispWidth / 2) - (bmw / 2);
                 tempy = (dispHeight / 2) - (bmh / 2);
                 return new Rect(tempx, tempy, bmw + tempx, bmh + tempy);
             }
-            if (displayMode == MjpegViewDefault.SIZE_BEST_FIT) {
+            if (displayMode == SIZE_BEST_FIT) {
                 float bmasp = (float) bmw / (float) bmh;
                 bmw = dispWidth;
                 bmh = (int) (dispWidth / bmasp);
@@ -381,7 +388,7 @@ public class MjpegViewDefault extends AbstractMjpegView {
                 tempy = (dispHeight / 2) - (bmh / 2);
                 return new Rect(tempx, tempy, bmw + tempx, bmh + tempy);
             }
-            if (displayMode == MjpegViewDefault.SIZE_SCALE_FIT) {
+            if (displayMode == SIZE_SCALE_FIT) {
                 float bmasp = ((float) bmw / (float) bmh);
                 tempx = 0;
                 tempy = 0;
@@ -394,7 +401,7 @@ public class MjpegViewDefault extends AbstractMjpegView {
                 }
                 return new Rect(tempx, tempy, bmw, bmh + tempy);
             }
-            if (displayMode == MjpegViewDefault.SIZE_FULLSCREEN)
+            if (displayMode == SIZE_FULLSCREEN)
                 return new Rect(0, 0, dispWidth, dispHeight);
             return null;
         }

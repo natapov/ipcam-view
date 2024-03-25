@@ -1,9 +1,10 @@
 package com.github.niqdev.mjpeg
 
+import android.view.SurfaceHolder
 import android.view.SurfaceView
 
 interface MjpegView {
-    fun setSource(stream: MjpegInputStreamDefault)
+    fun setSource(stream: MjpegInputStream)
     fun setDisplayMode(mode: DisplayMode)
     fun showFps(show: Boolean)
     fun flipSource(flip: Boolean)
@@ -22,4 +23,8 @@ interface MjpegView {
     fun resetTransparentBackground()
     fun setTransparentBackground()
     fun clearStream()
+    fun onSurfaceCreated(holder: SurfaceHolder)
+    fun onSurfaceChanged(holder: SurfaceHolder, format: Int, width: Int, height: Int)
+    fun onSurfaceDestroyed(holder: SurfaceHolder)
+
 }
