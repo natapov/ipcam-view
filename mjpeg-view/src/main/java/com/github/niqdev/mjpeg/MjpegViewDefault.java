@@ -108,7 +108,7 @@ public class MjpegViewDefault implements MjpegView {
 
     /* all methods/constructors below are no more accessible */
 
-    void _startPlayback() {
+    void startPlayback() {
         if (mIn != null && thread != null) {
             mRun = true;
             /*
@@ -120,7 +120,7 @@ public class MjpegViewDefault implements MjpegView {
         }
     }
 
-    void _resumePlayback() {
+    void resumePlayback() {
         mRun = true;
         init();
         thread.start();
@@ -173,13 +173,13 @@ public class MjpegViewDefault implements MjpegView {
         }
     }
 
-    void _frameCapturedWithByteData(byte[] imageByte, byte[] header) {
+    void frameCapturedWithByteData(byte[] imageByte, byte[] header) {
         if (onFrameCapturedListener != null) {
             onFrameCapturedListener.onFrameCapturedWithHeader(imageByte, header);
         }
     }
 
-    void _frameCapturedWithBitmap(Bitmap bitmap) {
+    void frameCapturedWithBitmap(Bitmap bitmap) {
         if (onFrameCapturedListener != null) {
             onFrameCapturedListener.onFrameCaptured(bitmap);
         }
@@ -194,8 +194,6 @@ public class MjpegViewDefault implements MjpegView {
     public void showFps(boolean show) {
         showFps = show;
     }
-
-
     @Override
     public void flipHorizontal(boolean flip) {
         flipHorizontal = flip;
@@ -215,11 +213,11 @@ public class MjpegViewDefault implements MjpegView {
     @Override
     public void setSource(@NonNull MjpegInputStream stream) {
         mIn = stream;
-        // make sure resume is calling _resumePlayback()
+        // make sure resume is calling resumePlayback()
         if (!resume) {
-            _startPlayback();
+            startPlayback();
         } else {
-            _resumePlayback();
+            resumePlayback();
         }
     }
 
@@ -426,8 +424,8 @@ public class MjpegViewDefault implements MjpegView {
                                 if (rotateDegrees != 0)
                                     bm = rotate(bm, rotateDegrees);
 
-                                _frameCapturedWithByteData(imageData, header);
-                                _frameCapturedWithBitmap(bm);
+                                frameCapturedWithByteData(imageData, header);
+                                frameCapturedWithBitmap(bm);
                                 destRect = destRect(bm.getWidth(),
                                         bm.getHeight());
 
