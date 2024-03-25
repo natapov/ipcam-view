@@ -3,7 +3,7 @@ package com.github.niqdev.mjpeg
 import android.view.SurfaceView
 
 interface MjpegView {
-    fun setSource(stream: MjpegInputStream)
+    fun setSource(stream: MjpegInputStreamDefault)
     fun setDisplayMode(mode: DisplayMode)
     fun showFps(show: Boolean)
     fun flipSource(flip: Boolean)

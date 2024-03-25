@@ -11,7 +11,7 @@ import com.github.niqdev.ipcam.databinding.ActivityIpcamDefaultBinding
 import com.github.niqdev.ipcam.settings.SettingsActivity
 import com.github.niqdev.mjpeg.DisplayMode
 import com.github.niqdev.mjpeg.Mjpeg
-import com.github.niqdev.mjpeg.MjpegInputStream
+import com.github.niqdev.mjpeg.MjpegInputStreamDefault
 
 class IpCamDefaultActivity : AppCompatActivity() {
 
@@ -41,7 +41,7 @@ class IpCamDefaultActivity : AppCompatActivity() {
                 .credential(getPreference(SettingsActivity.PREF_AUTH_USERNAME), getPreference(SettingsActivity.PREF_AUTH_PASSWORD))
                 .open(getPreference(SettingsActivity.PREF_IPCAM_URL), TIMEOUT)
                 .subscribe(
-                        { inputStream: MjpegInputStream ->
+                        { inputStream: MjpegInputStreamDefault ->
                             binding.mjpegViewDefault.setSource(inputStream)
                             binding.mjpegViewDefault.setDisplayMode(calculateDisplayMode())
                             binding.mjpegViewDefault.flipHorizontal(getBooleanPreference(SettingsActivity.PREF_FLIP_HORIZONTAL))

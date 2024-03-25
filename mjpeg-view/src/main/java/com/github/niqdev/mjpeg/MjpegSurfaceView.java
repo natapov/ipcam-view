@@ -90,7 +90,7 @@ public class MjpegSurfaceView extends SurfaceView implements SurfaceHolder.Callb
     }
 
     @Override
-    public void setSource(@NonNull MjpegInputStream stream) {
+    public void setSource(@NonNull MjpegInputStreamDefault stream) {
         mMjpegView.setSource(stream);
     }
 
