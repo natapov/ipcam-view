@@ -35,14 +35,7 @@ public class MjpegSurfaceView extends SurfaceView implements SurfaceHolder.Callb
             getHolder().setFormat(PixelFormat.TRANSPARENT);
         }
 
-        switch (getPropertyType(attrs, R.styleable.MjpegSurfaceView, R.styleable.MjpegSurfaceView_type)) {
-            case DEFAULT:
-                mMjpegView = new MjpegViewDefault(this, this, transparentBackground);
-                break;
-            case NATIVE:
-                mMjpegView = new MjpegViewNative(this, this, transparentBackground);
-                break;
-        }
+        mMjpegView = new MjpegViewDefault(this, this, transparentBackground);
 
         if (mMjpegView != null && backgroundColor != -1) {
             this.setCustomBackgroundColor(backgroundColor);
