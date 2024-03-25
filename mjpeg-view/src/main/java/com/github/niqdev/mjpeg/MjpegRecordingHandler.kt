@@ -9,7 +9,7 @@ import java.io.*
 import java.text.SimpleDateFormat
 import java.util.*
 
-class MjpegRecordingHandler(private val context: Context) : OnFrameCapturedListener {
+class MjpegRecordingHandler(private val context: Context)  {
     private var bos: BufferedOutputStream? = null
     var isRecording = false
     var lastBitmap: Bitmap? = null
@@ -96,11 +96,11 @@ class MjpegRecordingHandler(private val context: Context) : OnFrameCapturedListe
         return createSavingFile("video", "mjpeg")
     }
 
-    override fun onFrameCaptured(bitmap: Bitmap) {
+    fun onFrameCaptured(bitmap: Bitmap) {
         lastBitmap = bitmap
     }
 
-    override fun onFrameCapturedWithHeader(bitmap: ByteArray, header: ByteArray) {
+    fun onFrameCapturedWithHeader(bitmap: ByteArray, header: ByteArray) {
         if (isRecording) {
             try {
                 bos!!.write(header)

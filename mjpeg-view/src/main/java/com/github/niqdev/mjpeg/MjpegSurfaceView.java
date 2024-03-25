@@ -157,7 +157,7 @@ public class MjpegSurfaceView extends SurfaceView implements SurfaceHolder.Callb
     }
 
     @Override
-    public void setOnFrameCapturedListener(@NonNull OnFrameCapturedListener onFrameCapturedListener) {
+    public void setOnFrameCapturedListener(@NonNull MjpegRecordingHandler onFrameCapturedListener) {
         mMjpegView.setOnFrameCapturedListener(onFrameCapturedListener);
     }
 

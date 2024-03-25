@@ -15,7 +15,7 @@ interface MjpegView {
     val isStreaming: Boolean
     fun setResolution(width: Int, height: Int)
     fun freeCameraMemory()
-    fun setOnFrameCapturedListener(onFrameCapturedListener: OnFrameCapturedListener)
+    fun setOnFrameCapturedListener(onFrameCapturedListener: MjpegRecordingHandler)
     fun setCustomBackgroundColor(backgroundColor: Int)
     fun setFpsOverlayBackgroundColor(overlayBackgroundColor: Int)
     fun setFpsOverlayTextColor(overlayTextColor: Int)

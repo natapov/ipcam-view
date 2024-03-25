@@ -51,7 +51,7 @@ public class MjpegViewDefault implements MjpegView {
     private int dispHeight;
     private int displayMode;
     private boolean resume = false;
-    private OnFrameCapturedListener onFrameCapturedListener;
+    private MjpegRecordingHandler onFrameCapturedListener;
 
     public final int  POSITION_UPPER_LEFT = 9;
     public final int  POSITION_UPPER_RIGHT = 3;
@@ -129,7 +129,9 @@ public class MjpegViewDefault implements MjpegView {
     /*
      * @see https://github.com/niqdev/ipcam-view/issues/14
      */
-    synchronized void _stopPlayback() {
+
+    @Override
+    public synchronized void stopPlayback() {
         mRun = false;
         boolean retry = true;
         while (retry) {
@@ -155,15 +157,17 @@ public class MjpegViewDefault implements MjpegView {
         }
     }
 
-    void _surfaceChanged(int w, int h) {
+    @Override
+    public void onSurfaceChanged(@NonNull SurfaceHolder holder, int format, int width, int height) {
         if (thread != null) {
-            thread.setSurfaceSize(w, h);
+            thread.setSurfaceSize(width, height);
         }
     }
 
-    void _surfaceDestroyed() {
+    @Override
+    public void onSurfaceDestroyed(@NonNull SurfaceHolder holder) {
         surfaceDone = false;
-        _stopPlayback();
+        stopPlayback();
         if (thread != null) {
             thread = null;
         }
@@ -181,27 +185,36 @@ public class MjpegViewDefault implements MjpegView {
         }
     }
 
-    void _surfaceCreated() {
+    @Override
+    public void onSurfaceCreated(@NonNull SurfaceHolder holder) {
         surfaceDone = true;
     }
 
-    void _showFps(boolean b) {
-        showFps = b;
+    @Override
+    public void showFps(boolean show) {
+        showFps = show;
     }
 
-    void _flipHorizontal(boolean b) {
-        flipHorizontal = b;
-    }
 
-    void _flipVertical(boolean b) {
-        flipVertical = b;
+    @Override
+    public void flipHorizontal(boolean flip) {
+        flipHorizontal = flip;
+    }
+    @Override
+    public void flipSource(boolean flip) {
+        flipHorizontal = flip;
+    }
+    @Override
+    public void flipVertical(boolean flip) {
+        flipVertical = flip;
     }
 
     /*
      * @see https://github.com/niqdev/ipcam-view/issues/14
      */
-    void _setSource(MjpegInputStream source) {
-        mIn = source;
+    @Override
+    public void setSource(@NonNull MjpegInputStream stream) {
+        mIn = stream;
         // make sure resume is calling _resumePlayback()
         if (!resume) {
             _startPlayback();
@@ -231,60 +244,13 @@ public class MjpegViewDefault implements MjpegView {
     }
 
     @Override
-    public void onSurfaceCreated(@NonNull SurfaceHolder holder) {
-        _surfaceCreated();
-    }
-
-    /* override methods */
-
-    @Override
-    public void onSurfaceChanged(@NonNull SurfaceHolder holder, int format, int width, int height) {
-        _surfaceChanged(width, height);
-    }
-
-    @Override
-    public void onSurfaceDestroyed(@NonNull SurfaceHolder holder) {
-        _surfaceDestroyed();
-    }
-
-    @Override
-    public void setSource(@NonNull MjpegInputStream stream) {
-        _setSource(stream);
-    }
-
-    @Override
     public void setDisplayMode(DisplayMode mode) {
         setDisplayMode(mode.getValue());
     }
 
     @Override
-    public void showFps(boolean show) {
-        _showFps(show);
-    }
-
-    @Override
-    public void flipSource(boolean flip) {
-        _flipHorizontal(flip);
-    }
-
-    @Override
-    public void flipHorizontal(boolean flip) {
-        _flipHorizontal(flip);
-    }
-
-    @Override
-    public void flipVertical(boolean flip) {
-        _flipVertical(flip);
-    }
-
-    @Override
     public void setRotate(float degrees) {
         rotateDegrees = degrees;
-    }
-
-    @Override
-    public void stopPlayback() {
-        _stopPlayback();
     }
 
     @Override
@@ -303,7 +269,7 @@ public class MjpegViewDefault implements MjpegView {
     }
 
     @Override
-    public void setOnFrameCapturedListener(@NonNull OnFrameCapturedListener onFrameCapturedListener) {
+    public void setOnFrameCapturedListener(@NonNull MjpegRecordingHandler onFrameCapturedListener) {
         this.onFrameCapturedListener = onFrameCapturedListener;
     }
 
