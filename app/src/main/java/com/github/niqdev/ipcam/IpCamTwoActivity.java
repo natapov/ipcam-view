@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.github.niqdev.mjpeg.DisplayMode;
 import com.github.niqdev.mjpeg.Mjpeg;
 import com.github.niqdev.mjpeg.MjpegSurfaceView;
 
@@ -35,7 +34,7 @@ public class IpCamTwoActivity extends AppCompatActivity {
                 .subscribe(
                         inputStream -> {
                             mjpegView1.setSource(inputStream);
-                            mjpegView1.setDisplayMode(DisplayMode.BEST_FIT);
+                            mjpegView1.setDisplayMode(MjpegSurfaceView.DisplayMode.BEST_FIT);
                             mjpegView1.showFps(true);
                         },
                         throwable -> {
@@ -50,7 +49,7 @@ public class IpCamTwoActivity extends AppCompatActivity {
                 .subscribe(
                         inputStream -> {
                             mjpegView2.setSource(inputStream);
-                            mjpegView2.setDisplayMode(DisplayMode.BEST_FIT);
+                            mjpegView2.setDisplayMode(MjpegSurfaceView.DisplayMode.BEST_FIT);
                             mjpegView2.showFps(true);
                         },
                         throwable -> {

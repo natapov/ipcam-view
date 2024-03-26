@@ -2,7 +2,6 @@ package com.github.niqdev.ipcam;
 
 import android.os.Bundle;
 
-import com.github.niqdev.mjpeg.DisplayMode;
 import com.github.niqdev.mjpeg.Mjpeg;
 import com.github.niqdev.mjpeg.MjpegSurfaceView;
 
@@ -32,7 +31,7 @@ public class IpCamNativeActivity extends AppCompatActivity {
                 .subscribe(inputStream -> {
                     mjpegView.setSource(inputStream);
                     // TODO if (inputStream != null) inputStream.setSkip(1)
-                    mjpegView.setDisplayMode(DisplayMode.BEST_FIT);
+                    mjpegView.setDisplayMode(MjpegSurfaceView.DisplayMode.BEST_FIT);
                     mjpegView.showFps(true);
                 });
     }

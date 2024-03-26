@@ -9,9 +9,9 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.github.niqdev.ipcam.databinding.ActivityIpcamDefaultBinding
 import com.github.niqdev.ipcam.settings.SettingsActivity
-import com.github.niqdev.mjpeg.DisplayMode
 import com.github.niqdev.mjpeg.Mjpeg
 import com.github.niqdev.mjpeg.MjpegInputStream
+import com.github.niqdev.mjpeg.MjpegSurfaceView
 
 class IpCamDefaultActivity : AppCompatActivity() {
 
@@ -32,9 +32,9 @@ class IpCamDefaultActivity : AppCompatActivity() {
     private fun getBooleanPreference(key: String) = sharedPreferences.getBoolean(key, false)
 
     private fun calculateDisplayMode() = if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE)
-        DisplayMode.FULLSCREEN
+        MjpegSurfaceView.DisplayMode.FULLSCREEN
     else
-        DisplayMode.BEST_FIT
+        MjpegSurfaceView.DisplayMode.BEST_FIT
 
     private fun loadIpCam() {
          Mjpeg()

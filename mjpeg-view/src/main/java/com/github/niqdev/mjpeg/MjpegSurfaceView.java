@@ -28,8 +28,9 @@ import androidx.annotation.StyleableRes;
 
 public class MjpegSurfaceView extends SurfaceView implements SurfaceHolder.Callback {
 
-    public enum placeholder {
-        DEFAULsT, NATIVEs
+
+    public enum DisplayMode {
+        STANDARD, BEST_FIT, SCALE_FIT, FULLSCREEN
     }
     private static final String TAG = MjpegSurfaceView.class.getSimpleName();
     private final boolean transparentBackground;
@@ -45,7 +46,7 @@ public class MjpegSurfaceView extends SurfaceView implements SurfaceHolder.Callb
     private int ovlPos;
     private int dispWidth;
     private int dispHeight;
-    private int displayMode;
+    private DisplayMode displayMode;
     private boolean resume = false;
     private MjpegRecordingHandler onFrameCapturedListener;
 
@@ -53,10 +54,7 @@ public class MjpegSurfaceView extends SurfaceView implements SurfaceHolder.Callb
     public final int  POSITION_UPPER_RIGHT = 3;
     public final int  POSITION_LOWER_LEFT = 12;
     public final int  POSITION_LOWER_RIGHT = 6;
-    public final int  SIZE_STANDARD = 1;
-    public final int  SIZE_BEST_FIT = 4;
-    public final int  SIZE_SCALE_FIT = 16;
-    public final int  SIZE_FULLSCREEN = 8;
+
 
 
 
@@ -90,10 +88,10 @@ public class MjpegSurfaceView extends SurfaceView implements SurfaceHolder.Callb
             overlayTextColor = Color.WHITE;
             overlayBackgroundColor = Color.BLACK;
             backgroundColor = Color.BLACK;
-            ovlPos = this.POSITION_LOWER_RIGHT;
-            displayMode = this.SIZE_STANDARD;
-            dispWidth = this.getWidth();
-            dispHeight = this.getHeight();
+            ovlPos = POSITION_LOWER_RIGHT;
+            displayMode = DisplayMode.STANDARD;
+            dispWidth = getWidth();
+            dispHeight = getHeight();
         }
     }
 
@@ -145,14 +143,9 @@ public class MjpegSurfaceView extends SurfaceView implements SurfaceHolder.Callb
         }
     }
 
-    void setDisplayMode(int s) {
-        displayMode = s;
-    }
-
     public void setDisplayMode(@NonNull DisplayMode mode) {
-        setDisplayMode(mode.getValue());
+        displayMode = mode;
     }
-
     public void showFps(boolean show) {
         showFps = show;
     }
@@ -265,12 +258,12 @@ public class MjpegSurfaceView extends SurfaceView implements SurfaceHolder.Callb
 
             int tempx;
             int tempy;
-            if (displayMode == SIZE_STANDARD) {
+            if (displayMode == DisplayMode.STANDARD) {
                 tempx = (dispWidth / 2) - (bmw / 2);
                 tempy = (dispHeight / 2) - (bmh / 2);
                 return new Rect(tempx, tempy, bmw + tempx, bmh + tempy);
             }
-            if (displayMode == SIZE_BEST_FIT) {
+            if (displayMode == DisplayMode.BEST_FIT) {
                 float bmasp = (float) bmw / (float) bmh;
                 bmw = dispWidth;
                 bmh = (int) (dispWidth / bmasp);
@@ -282,7 +275,7 @@ public class MjpegSurfaceView extends SurfaceView implements SurfaceHolder.Callb
                 tempy = (dispHeight / 2) - (bmh / 2);
                 return new Rect(tempx, tempy, bmw + tempx, bmh + tempy);
             }
-            if (displayMode == SIZE_SCALE_FIT) {
+            if (displayMode == DisplayMode.SCALE_FIT) {
                 float bmasp = ((float) bmw / (float) bmh);
                 tempx = 0;
                 tempy = 0;
@@ -295,7 +288,7 @@ public class MjpegSurfaceView extends SurfaceView implements SurfaceHolder.Callb
                 }
                 return new Rect(tempx, tempy, bmw, bmh + tempy);
             }
-            if (displayMode == SIZE_FULLSCREEN)
+            if (displayMode == DisplayMode.FULLSCREEN)
                 return new Rect(0, 0, dispWidth, dispHeight);
             return null;
         }

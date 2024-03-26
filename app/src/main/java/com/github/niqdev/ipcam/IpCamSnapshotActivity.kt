@@ -12,10 +12,10 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.github.niqdev.ipcam.databinding.ActivityIpcamSnapshotBinding
 import com.github.niqdev.ipcam.settings.SettingsActivity
-import com.github.niqdev.mjpeg.DisplayMode
 import com.github.niqdev.mjpeg.Mjpeg
 import com.github.niqdev.mjpeg.MjpegInputStream
 import com.github.niqdev.mjpeg.MjpegRecordingHandler
+import com.github.niqdev.mjpeg.MjpegSurfaceView
 import java.util.*
 
 class IpCamSnapshotActivity : AppCompatActivity() {
@@ -40,12 +40,12 @@ class IpCamSnapshotActivity : AppCompatActivity() {
         .getDefaultSharedPreferences(this)
         .getString(key, "")
 
-    private fun calculateDisplayMode(): DisplayMode {
+    private fun calculateDisplayMode(): MjpegSurfaceView.DisplayMode {
         val orientation = resources.configuration.orientation
         return if (orientation == Configuration.ORIENTATION_LANDSCAPE)
-            DisplayMode.FULLSCREEN
+            MjpegSurfaceView.DisplayMode.FULLSCREEN
         else
-            DisplayMode.BEST_FIT
+            MjpegSurfaceView.DisplayMode.BEST_FIT
     }
 
     private fun loadIpCam() {

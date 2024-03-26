@@ -9,7 +9,6 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.github.niqdev.mjpeg.DisplayMode;
 import com.github.niqdev.mjpeg.Mjpeg;
 import com.github.niqdev.mjpeg.MjpegSurfaceView;
 
@@ -49,7 +48,7 @@ public class IpCamCustomAppearanceActivity extends AppCompatActivity {
                             mjpegView.setFpsOverlayBackgroundColor(Color.DKGRAY);
                             mjpegView.setFpsOverlayTextColor(Color.WHITE);
                             mjpegView.setSource(inputStream);
-                            mjpegView.setDisplayMode(DisplayMode.BEST_FIT);
+                            mjpegView.setDisplayMode(MjpegSurfaceView.DisplayMode.BEST_FIT);
                             mjpegView.showFps(true);
                         },
                         throwable -> {
