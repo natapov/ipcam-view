@@ -35,11 +35,6 @@ public class Mjpeg {
     }
 
     /**
-     * Uses {@link Type#DEFAULT} implementation.
-     *
-     * @return Mjpeg instance
-     */
-    /**
      * Configure authentication.
      *
      * @param username credential
