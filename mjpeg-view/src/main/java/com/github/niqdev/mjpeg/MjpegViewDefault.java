@@ -85,7 +85,6 @@ public class MjpegViewDefault implements MjpegView {
     }
 
     private void init() {
-
         SurfaceHolder holder = mSurfaceView.getHolder();
         holder.addCallback(mSurfaceHolderCallback);
         thread = new MjpegViewThread(holder);
