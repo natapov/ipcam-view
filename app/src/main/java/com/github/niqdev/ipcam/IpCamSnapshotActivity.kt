@@ -49,7 +49,7 @@ class IpCamSnapshotActivity : AppCompatActivity() {
     }
 
     private fun loadIpCam() {
-        Mjpeg.newInstance()
+        Mjpeg()
             .credential(getPreference(SettingsActivity.PREF_AUTH_USERNAME), getPreference(SettingsActivity.PREF_AUTH_PASSWORD))
             .open(getPreference(SettingsActivity.PREF_IPCAM_URL), TIMEOUT)
             .subscribe(

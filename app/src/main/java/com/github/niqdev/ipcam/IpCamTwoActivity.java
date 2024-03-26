@@ -30,7 +30,7 @@ public class IpCamTwoActivity extends AppCompatActivity {
     }
 
     private void loadIpCam1() {
-        Mjpeg.newInstance()
+        new Mjpeg()
                 .open("http://50.244.186.65:8081/mjpg/video.mjpg", TIMEOUT)
                 .subscribe(
                         inputStream -> {
@@ -45,7 +45,7 @@ public class IpCamTwoActivity extends AppCompatActivity {
     }
 
     private void loadIpCam2() {
-        Mjpeg.newInstance()
+        new Mjpeg()
                 .open("http://iris.not.iac.es/axis-cgi/mjpg/video.cgi?resolution=320x240", TIMEOUT)
                 .subscribe(
                         inputStream -> {

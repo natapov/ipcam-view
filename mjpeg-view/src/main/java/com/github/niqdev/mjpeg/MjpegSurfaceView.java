@@ -28,9 +28,10 @@ import androidx.annotation.StyleableRes;
 
 public class MjpegSurfaceView extends SurfaceView implements SurfaceHolder.Callback {
 
-    private static final int DEFAULT_TYPE = 0;
+    public enum placeholder {
+        DEFAULsT, NATIVEs
+    }
     private static final String TAG = MjpegSurfaceView.class.getSimpleName();
-
     private final boolean transparentBackground;
     private MjpegViewThread thread;
     private MjpegInputStream mIn = null;
@@ -56,15 +57,7 @@ public class MjpegSurfaceView extends SurfaceView implements SurfaceHolder.Callb
     public final int  SIZE_BEST_FIT = 4;
     public final int  SIZE_SCALE_FIT = 16;
     public final int  SIZE_FULLSCREEN = 8;
-    private static final SparseArray<Mjpeg.Type> TYPE;
 
-
-
-    static {
-        TYPE = new SparseArray<>();
-        TYPE.put(0, Mjpeg.Type.DEFAULT);
-        TYPE.put(1, Mjpeg.Type.NATIVE);
-    }
 
 
     public MjpegSurfaceView(Context context, AttributeSet attrs) {
@@ -101,17 +94,6 @@ public class MjpegSurfaceView extends SurfaceView implements SurfaceHolder.Callb
             displayMode = this.SIZE_STANDARD;
             dispWidth = this.getWidth();
             dispHeight = this.getHeight();
-        }
-    }
-    public Mjpeg.Type getPropertyType(AttributeSet attributeSet, @StyleableRes int[] attrs, int attrIndex) {
-        TypedArray typedArray = getContext().getTheme()
-                .obtainStyledAttributes(attributeSet, attrs, 0, 0);
-        try {
-            int typeIndex = typedArray.getInt(attrIndex, DEFAULT_TYPE);
-            Mjpeg.Type type = TYPE.get(typeIndex);
-            return type != null ? type : TYPE.get(DEFAULT_TYPE);
-        } finally {
-            typedArray.recycle();
         }
     }
 

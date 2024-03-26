@@ -29,14 +29,9 @@ public class Mjpeg {
     private static final String TAG = Mjpeg.class.getSimpleName();
 
     private static final CookieManager msCookieManager = new CookieManager();
-    private final Type type;
     private boolean sendConnectionCloseHeader = false;
 
-    private Mjpeg(Type type) {
-        if (type == null) {
-            throw new IllegalArgumentException("null type not allowed");
-        }
-        this.type = type;
+    public Mjpeg() {
     }
 
     /**
@@ -44,19 +39,6 @@ public class Mjpeg {
      *
      * @return Mjpeg instance
      */
-    public static Mjpeg newInstance() {
-        return new Mjpeg(Type.DEFAULT);
-    }
-
-    /**
-     * Choose among {@link com.github.niqdev.mjpeg.Mjpeg.Type} implementations.
-     *
-     * @return Mjpeg instance
-     */
-    public static Mjpeg newInstance(Type type) {
-        return new Mjpeg(type);
-    }
-
     /**
      * Configure authentication.
      *
@@ -160,7 +142,4 @@ public class Mjpeg {
     /**
      * Library implementation type
      */
-    public enum Type {
-        DEFAULT, NATIVE
-    }
 }
