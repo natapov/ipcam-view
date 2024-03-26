@@ -139,25 +139,16 @@ public class MjpegSurfaceView extends SurfaceView implements SurfaceHolder.Callb
     }
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
-        onSurfaceCreated(holder);
+        surfaceDone = true;
     }
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-        onSurfaceChanged(holder, format, width, height);
-    }
-    @Override
-    public void surfaceDestroyed(SurfaceHolder holder) {
-        onSurfaceDestroyed(holder);
-    }
-    public void onSurfaceCreated(SurfaceHolder holder) {
-        surfaceDone = true;
-    }
-    public void onSurfaceChanged(SurfaceHolder holder, int format, int width, int height) {
         if (thread != null) {
             thread.setSurfaceSize(width, height);
         }
     }
-    public void onSurfaceDestroyed(SurfaceHolder holder) {
+    @Override
+    public void surfaceDestroyed(SurfaceHolder holder) {
         surfaceDone = false;
         stopPlayback();
         if (thread != null) {
