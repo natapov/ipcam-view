@@ -35,9 +35,6 @@ public class MjpegSurfaceView extends SurfaceView implements SurfaceHolder.Callb
     private MjpegViewThread thread;
     private MjpegInputStream mIn = null;
     private boolean showFps = false;
-    private boolean flipHorizontal = false;
-    private boolean flipVertical = false;
-    private float rotateDegrees = 0;
     private volatile boolean mRun = false;
     private volatile boolean surfaceDone = false;
     private Paint overlayPaint;
@@ -177,19 +174,6 @@ public class MjpegSurfaceView extends SurfaceView implements SurfaceHolder.Callb
     public void showFps(boolean show) {
         showFps = show;
     }
-
-    public void flipHorizontal(boolean flip) {
-        flipHorizontal = flip;
-    }
-
-    public void flipVertical(boolean flip) {
-        flipVertical = flip;
-    }
-
-    public void setRotate(float degrees) {
-        rotateDegrees = degrees;
-    }
-
     public boolean isStreaming() {
         return mRun;
     }
@@ -285,21 +269,6 @@ public class MjpegSurfaceView extends SurfaceView implements SurfaceHolder.Callb
             mIn = null;
         }
     }
-    Bitmap flip(Bitmap src) {
-        Matrix m = new Matrix();
-        float sx = flipHorizontal ? -1 : 1;
-        float sy = flipVertical ? -1 : 1;
-        m.preScale(sx, sy);
-        Bitmap dst = Bitmap.createBitmap(src, 0, 0, src.getWidth(), src.getHeight(), m, false);
-        dst.setDensity(DisplayMetrics.DENSITY_DEFAULT);
-        return dst;
-    }
-
-    Bitmap rotate(Bitmap src, float degrees) {
-        Matrix m = new Matrix();
-        m.setRotate(degrees);
-        return Bitmap.createBitmap(src, 0, 0, src.getWidth(), src.getHeight(), m, false);
-    }
     class MjpegViewThread extends Thread {
         private final SurfaceHolder mSurfaceHolder;
         private int frameCounter = 0;
@@ -369,7 +338,7 @@ public class MjpegSurfaceView extends SurfaceView implements SurfaceHolder.Callb
             c.drawRect(0, 0, bwidth, bheight, p);
             p.setColor(overlayTextColor);
             c.drawText(text, -b.left + 1,
-                    (bheight / 2) - ((p.ascent() + p.descent()) / 2) + 1, p);
+                    ((float) bheight / 2) - ((p.ascent() + p.descent()) / 2) + 1, p);
             return bm;
         }
         void frameCapturedWithByteData(byte[] imageByte, byte[] header) {
@@ -409,11 +378,6 @@ public class MjpegSurfaceView extends SurfaceView implements SurfaceHolder.Callb
                                 byte[] header = mIn.readHeader();
                                 byte[] imageData = mIn.readMjpegFrame(header);
                                 bm = BitmapFactory.decodeStream(new ByteArrayInputStream(imageData));
-                                if (flipHorizontal || flipVertical)
-                                    bm = flip(bm);
-                                if (rotateDegrees != 0)
-                                    bm = rotate(bm, rotateDegrees);
-
                                 frameCapturedWithByteData(imageData, header);
                                 frameCapturedWithBitmap(bm);
                                 destRect = destRect(bm.getWidth(),

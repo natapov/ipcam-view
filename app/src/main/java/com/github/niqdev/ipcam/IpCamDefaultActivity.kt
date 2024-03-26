@@ -44,9 +44,6 @@ class IpCamDefaultActivity : AppCompatActivity() {
                         { inputStream: MjpegInputStream ->
                             binding.mjpegViewDefault.setSource(inputStream)
                             binding.mjpegViewDefault.setDisplayMode(calculateDisplayMode())
-                            binding.mjpegViewDefault.flipHorizontal(getBooleanPreference(SettingsActivity.PREF_FLIP_HORIZONTAL))
-                            binding.mjpegViewDefault.flipVertical(getBooleanPreference(SettingsActivity.PREF_FLIP_VERTICAL))
-                            binding.mjpegViewDefault.setRotate(getPreference(SettingsActivity.PREF_ROTATE_DEGREES)!!.toFloat())
                             binding.mjpegViewDefault.showFps(true)
                         }
                 ) { throwable: Throwable ->
