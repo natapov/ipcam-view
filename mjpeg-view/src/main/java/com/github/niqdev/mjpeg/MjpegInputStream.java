@@ -18,9 +18,13 @@ import java.util.Properties;
  */
 public class MjpegInputStream extends DataInputStream {
     private final static int HEADER_MAX_LENGTH = 100;
-    private final static int FRAME_MAX_LENGTH = 200000 + HEADER_MAX_LENGTH;
+    private final static int FRAME_MAX_LENGTH = 200000;
     private final byte[] SOI_MARKER = {(byte) 0xFF, (byte) 0xD8};
     private final byte[] EOF_MARKER = {(byte) 0xFF, (byte) 0xD9};
+
+    public byte[] frameBuffer = new byte[FRAME_MAX_LENGTH];
+    public byte[] headerBuffer = new byte[HEADER_MAX_LENGTH];
+
     private final String CONTENT_LENGTH = "Content-Length";
     private int mContentLength = -1;
     // no more accessible
@@ -56,47 +60,18 @@ public class MjpegInputStream extends DataInputStream {
         props.load(headerIn);
         return Integer.parseInt(props.getProperty(CONTENT_LENGTH));
     }
-
-    byte[] readHeader() throws IOException {
-        mark(FRAME_MAX_LENGTH);
+    int readMjpegFrame() throws IOException {
+        mark(FRAME_MAX_LENGTH + HEADER_MAX_LENGTH);
         int headerLen = getStartOfSequence(this, SOI_MARKER);
         reset();
-        byte[] header = new byte[headerLen];
-        readFully(header);
-        return header;
-    }
-
-    // no more accessible
-    byte[] readMjpegFrame(byte[] header) throws IOException {
+        readFully(headerBuffer, 0, headerLen);
         try {
-            mContentLength = parseContentLength(header);
+            mContentLength = parseContentLength(headerBuffer);
         } catch (IllegalArgumentException iae) {
             mContentLength = getEndOfSequence(this, EOF_MARKER);
         }
-        reset();
-        byte[] frameData = new byte[mContentLength];
-        skipBytes(header.length);
-        readFully(frameData);
-        return frameData;
+        //todo catch exception
+        readFully(frameBuffer, 0, mContentLength);
+        return mContentLength;
     }
-
-    // no more accessible
-    Bitmap readMjpegFrame() throws IOException {
-        mark(FRAME_MAX_LENGTH);
-        int headerLen = getStartOfSequence(this, SOI_MARKER);
-        reset();
-        byte[] header = new byte[headerLen];
-        readFully(header);
-        try {
-            mContentLength = parseContentLength(header);
-        } catch (IllegalArgumentException iae) {
-            mContentLength = getEndOfSequence(this, EOF_MARKER);
-        }
-        reset();
-        byte[] frameData = new byte[mContentLength];
-        skipBytes(headerLen);
-        readFully(frameData);
-        return BitmapFactory.decodeStream(new ByteArrayInputStream(frameData));
-    }
-
 }

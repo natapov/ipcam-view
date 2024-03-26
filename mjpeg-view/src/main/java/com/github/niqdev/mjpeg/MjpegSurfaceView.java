@@ -272,10 +272,9 @@ public class MjpegSurfaceView extends SurfaceView implements SurfaceHolder.Callb
                         }
                         synchronized (mSurfaceHolder) {
                             try {
-                                byte[] header = mIn.readHeader();
-                                byte[] imageData = mIn.readMjpegFrame(header);
-                                bm = BitmapFactory.decodeStream(new ByteArrayInputStream(imageData));
-                                frameCapturedWithByteData(imageData, header);
+                                int bytesRead = mIn.readMjpegFrame();
+                                bm = BitmapFactory.decodeByteArray(mIn.frameBuffer, 0, bytesRead);
+                                // frameCapturedWithByteData(imageData, header);
                                 frameCapturedWithBitmap(bm);
                                 destRect = destRect(bm.getWidth(), bm.getHeight());
 
