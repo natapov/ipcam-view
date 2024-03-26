@@ -26,10 +26,10 @@ import java.io.IOException;
 import androidx.annotation.NonNull;
 import androidx.annotation.StyleableRes;
 
-public class MjpegSurfaceView extends SurfaceView implements SurfaceHolder.Callback, MjpegView {
+public class MjpegSurfaceView extends SurfaceView implements SurfaceHolder.Callback {
 
     private static final int DEFAULT_TYPE = 0;
-    private static final String TAG = MjpegViewDefault.class.getSimpleName();
+    private static final String TAG = MjpegSurfaceView.class.getSimpleName();
 
     private final boolean transparentBackground;
     private MjpegViewThread thread;
@@ -149,18 +149,15 @@ public class MjpegSurfaceView extends SurfaceView implements SurfaceHolder.Callb
     public void surfaceDestroyed(SurfaceHolder holder) {
         onSurfaceDestroyed(holder);
     }
-    @Override
     public void onSurfaceCreated(SurfaceHolder holder) {
         surfaceDone = true;
     }
-    @Override
     public void onSurfaceChanged(SurfaceHolder holder, int format, int width, int height) {
         if (thread != null) {
             thread.setSurfaceSize(width, height);
         }
     }
 
-    @Override
     public void onSurfaceDestroyed(SurfaceHolder holder) {
         surfaceDone = false;
         stopPlayback();
@@ -169,7 +166,6 @@ public class MjpegSurfaceView extends SurfaceView implements SurfaceHolder.Callb
         }
     }
 
-    @Override
     public void setSource(@NonNull MjpegInputStream stream) {
         mIn = stream;
         // make sure resume is calling resumePlayback()
@@ -184,90 +180,69 @@ public class MjpegSurfaceView extends SurfaceView implements SurfaceHolder.Callb
         displayMode = s;
     }
 
-    @Override
     public void setDisplayMode(@NonNull DisplayMode mode) {
         setDisplayMode(mode.getValue());
     }
 
-    @Override
     public void showFps(boolean show) {
         showFps = show;
     }
 
-    @Override
     public void flipSource(boolean flip) {
         flipHorizontal = flip;
     }
 
-    @Override
     public void flipHorizontal(boolean flip) {
         flipHorizontal = flip;
     }
 
-    @Override
     public void flipVertical(boolean flip) {
         flipVertical = flip;
     }
 
-    @Override
     public void setRotate(float degrees) {
         rotateDegrees = degrees;
     }
 
-    @Override
     public boolean isStreaming() {
         return mRun;
     }
 
-    @Override
-    public void setResolution(int width, int height) {
-        throw new UnsupportedOperationException("not implemented");
-    }
-
-    @Override
     public void freeCameraMemory() {
         throw new UnsupportedOperationException("not implemented");
     }
 
-    @Override
     public void setOnFrameCapturedListener(@NonNull MjpegRecordingHandler onFrameCapturedListener) {
         this.onFrameCapturedListener = onFrameCapturedListener;
     }
 
-    @Override
     public void setCustomBackgroundColor(int backgroundColor) {
         this.backgroundColor = backgroundColor;
     }
 
-    @Override
     public void setFpsOverlayBackgroundColor(int overlayBackgroundColor) {
         this.overlayBackgroundColor = overlayBackgroundColor;
     }
 
-    @Override
     public void setFpsOverlayTextColor(int overlayTextColor) {
         this.overlayTextColor = overlayTextColor;
     }
 
     @NonNull
-    @Override
     public SurfaceView getSurfaceView() {
         return this;
     }
 
-    @Override
     public void resetTransparentBackground() {
         setZOrderOnTop(false);
         getHolder().setFormat(PixelFormat.OPAQUE);
     }
 
-    @Override
     public void setTransparentBackground() {
         setZOrderOnTop(true);
         getHolder().setFormat(PixelFormat.TRANSPARENT);
     }
 
-    @Override
     public void clearStream() {
         Canvas c = null;
 
@@ -297,7 +272,7 @@ public class MjpegSurfaceView extends SurfaceView implements SurfaceHolder.Callb
 
     void resumePlayback() {
         mRun = true;
-        init(); // from mjpegviewdefault
+        init();
         thread.start();
     }
 
@@ -305,7 +280,6 @@ public class MjpegSurfaceView extends SurfaceView implements SurfaceHolder.Callb
      * @see https://github.com/niqdev/ipcam-view/issues/14
      */
 
-    @Override
     public synchronized void stopPlayback() {
         mRun = false;
         boolean retry = true;

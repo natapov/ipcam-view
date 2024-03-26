@@ -11,7 +11,7 @@ import android.widget.Toast;
 
 import com.github.niqdev.mjpeg.DisplayMode;
 import com.github.niqdev.mjpeg.Mjpeg;
-import com.github.niqdev.mjpeg.MjpegView;
+import com.github.niqdev.mjpeg.MjpegSurfaceView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import butterknife.BindView;
@@ -27,7 +27,7 @@ public class IpCamCustomAppearanceActivity extends AppCompatActivity {
     private static final int TIMEOUT = 5;
 
     @BindView(R.id.mjpegViewCustomAppearance)
-    MjpegView mjpegView;
+    MjpegSurfaceView mjpegView;
 
     @BindView(R.id.layoutProgressWrapper)
     LinearLayout progressWrapper;

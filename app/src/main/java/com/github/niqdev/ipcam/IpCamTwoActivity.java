@@ -6,7 +6,7 @@ import android.widget.Toast;
 
 import com.github.niqdev.mjpeg.DisplayMode;
 import com.github.niqdev.mjpeg.Mjpeg;
-import com.github.niqdev.mjpeg.MjpegView;
+import com.github.niqdev.mjpeg.MjpegSurfaceView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import butterknife.BindView;
@@ -17,10 +17,10 @@ public class IpCamTwoActivity extends AppCompatActivity {
     private static final int TIMEOUT = 5;
 
     @BindView(R.id.mjpegViewDefault1)
-    MjpegView mjpegView1;
+    MjpegSurfaceView mjpegView1;
 
     @BindView(R.id.mjpegViewDefault2)
-    MjpegView mjpegView2;
+    MjpegSurfaceView mjpegView2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

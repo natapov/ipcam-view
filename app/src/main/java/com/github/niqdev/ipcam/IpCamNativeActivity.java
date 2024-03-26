@@ -4,7 +4,7 @@ import android.os.Bundle;
 
 import com.github.niqdev.mjpeg.DisplayMode;
 import com.github.niqdev.mjpeg.Mjpeg;
-import com.github.niqdev.mjpeg.MjpegView;
+import com.github.niqdev.mjpeg.MjpegSurfaceView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import butterknife.BindView;
@@ -13,7 +13,7 @@ import butterknife.ButterKnife;
 public class IpCamNativeActivity extends AppCompatActivity {
 
     @BindView(R.id.mjpegViewNative)
-    MjpegView mjpegView;
+    MjpegSurfaceView mjpegView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
