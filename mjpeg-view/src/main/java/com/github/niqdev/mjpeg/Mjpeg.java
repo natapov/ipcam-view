@@ -132,8 +132,4 @@ public class Mjpeg {
                     TextUtils.join(";", msCookieManager.getCookieStore().getCookies()));
         }
     }
-
-    /**
-     * Library implementation type
-     */
 }

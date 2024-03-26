@@ -7,7 +7,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.PixelFormat;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
@@ -16,7 +15,6 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import androidx.annotation.NonNull;
 import androidx.annotation.StyleableRes;
@@ -79,9 +77,6 @@ public class MjpegSurfaceView extends SurfaceView implements SurfaceHolder.Callb
         synchronized (holder) {
             dispWidth = width;
             dispHeight = height;
-        }
-        if (thread != null) {
-            thread.setSurfaceSize(width, height);
         }
     }
     @Override
@@ -182,49 +177,12 @@ public class MjpegSurfaceView extends SurfaceView implements SurfaceHolder.Callb
         }
 
         private Rect destRect(int bmw, int bmh) {
-
             int tempx;
             int tempy;
-            if (displayMode == DisplayMode.STANDARD) {
-                tempx = (dispWidth / 2) - (bmw / 2);
-                tempy = (dispHeight / 2) - (bmh / 2);
-                return new Rect(tempx, tempy, bmw + tempx, bmh + tempy);
-            }
-            if (displayMode == DisplayMode.BEST_FIT) {
-                float bmasp = (float) bmw / (float) bmh;
-                bmw = dispWidth;
-                bmh = (int) (dispWidth / bmasp);
-                if (bmh > dispHeight) {
-                    bmh = dispHeight;
-                    bmw = (int) (dispHeight * bmasp);
-                }
-                tempx = (dispWidth / 2) - (bmw / 2);
-                tempy = (dispHeight / 2) - (bmh / 2);
-                return new Rect(tempx, tempy, bmw + tempx, bmh + tempy);
-            }
-            if (displayMode == DisplayMode.SCALE_FIT) {
-                float bmasp = ((float) bmw / (float) bmh);
-                tempx = 0;
-                tempy = 0;
-                if (bmw < dispWidth) {
-                    bmw = dispWidth;
-                    // cross-multiplication using aspect ratio
-                    bmh = (int) (dispWidth / bmasp);
-                    // set it to the center height
-                    tempy = (dispHeight - bmh) / 4;
-                }
-                return new Rect(tempx, tempy, bmw, bmh + tempy);
-            }
-            if (displayMode == DisplayMode.FULLSCREEN)
-                return new Rect(0, 0, dispWidth, dispHeight);
-            return null;
+            tempx = (dispWidth / 2) - (bmw / 2);
+            tempy = (dispHeight / 2) - (bmh / 2);
+            return new Rect(tempx, tempy, bmw + tempx, bmh + tempy);
         }
-
-        // no more accessible
-        void setSurfaceSize(int width, int height) {
-
-        }
-
         private Bitmap makeFpsOverlay(Paint p, String text) {
             Rect b = new Rect();
             p.getTextBounds(text, 0, text.length(), b);
