@@ -26,13 +26,12 @@ public class MjpegSurfaceView extends SurfaceView implements SurfaceHolder.Callb
         STANDARD, BEST_FIT, SCALE_FIT, FULLSCREEN
     }
     private static final String TAG = MjpegSurfaceView.class.getSimpleName();
-    private final boolean transparentBackground;
     private MjpegViewThread thread;
     private MjpegInputStream mIn = null;
     public boolean showFps = true;
     private volatile boolean isRunning = false;
     private volatile boolean surfaceDone = false;
-    private Paint overlayPaint;
+    private Paint fpsPaint;
     private final int overlayTextColor = Color.WHITE;
     private final int overlayBackgroundColor = Color.DKGRAY;
     private final int backgroundColor = Color.BLACK;
@@ -45,17 +44,10 @@ public class MjpegSurfaceView extends SurfaceView implements SurfaceHolder.Callb
 
     public MjpegSurfaceView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        boolean transparentBackground = getPropertyBoolean(attrs, R.styleable.MjpegSurfaceView, R.styleable.MjpegSurfaceView_transparentBackground);
-
-        if (transparentBackground) {
-            setZOrderOnTop(true);
-            getHolder().setFormat(PixelFormat.TRANSPARENT);
-        }
-        this.transparentBackground = transparentBackground;
-        overlayPaint = new Paint();
-        overlayPaint.setTextAlign(Paint.Align.LEFT);
-        overlayPaint.setTextSize(12);
-        overlayPaint.setTypeface(Typeface.DEFAULT);
+        fpsPaint = new Paint();
+        fpsPaint.setTextAlign(Paint.Align.LEFT);
+        fpsPaint.setTextSize(12);
+        fpsPaint.setTypeface(Typeface.DEFAULT);
         displayMode = DisplayMode.STANDARD;
         dispWidth = getWidth();
         dispHeight = getHeight();
@@ -74,16 +66,6 @@ public class MjpegSurfaceView extends SurfaceView implements SurfaceHolder.Callb
                 .obtainStyledAttributes(attributeSet, attrs, 0, 0);
         try {
             return typedArray.getBoolean(attrIndex, false);
-        } finally {
-            typedArray.recycle();
-        }
-    }
-
-    public int getPropertyColor(AttributeSet attributeSet, @StyleableRes int[] attrs, int attrIndex) {
-        TypedArray typedArray = getContext().getTheme()
-                .obtainStyledAttributes(attributeSet, attrs, 0, 0);
-        try {
-            return typedArray.getColor(attrIndex, -1);
         } finally {
             typedArray.recycle();
         }
@@ -126,15 +108,6 @@ public class MjpegSurfaceView extends SurfaceView implements SurfaceHolder.Callb
     }
     public void setOnFrameCapturedListener(@NonNull MjpegRecordingHandler onFrameCapturedListener) {
         this.onFrameCapturedListener = onFrameCapturedListener;
-    }
-    public void resetTransparentBackground() {
-        setZOrderOnTop(false);
-        getHolder().setFormat(PixelFormat.OPAQUE);
-    }
-
-    public void setTransparentBackground() {
-        setZOrderOnTop(true);
-        getHolder().setFormat(PixelFormat.TRANSPARENT);
     }
 
     public void clearStream() {
@@ -280,8 +253,7 @@ public class MjpegSurfaceView extends SurfaceView implements SurfaceHolder.Callb
 
         public void run() {
             long start = System.currentTimeMillis();
-            PorterDuffXfermode mode = new PorterDuffXfermode(
-                    PorterDuff.Mode.DST_OVER);
+            PorterDuffXfermode mode = new PorterDuffXfermode(PorterDuff.Mode.DST_OVER);
             Bitmap bm;
             int width;
             int height;
@@ -305,14 +277,9 @@ public class MjpegSurfaceView extends SurfaceView implements SurfaceHolder.Callb
                                 bm = BitmapFactory.decodeStream(new ByteArrayInputStream(imageData));
                                 frameCapturedWithByteData(imageData, header);
                                 frameCapturedWithBitmap(bm);
-                                destRect = destRect(bm.getWidth(),
-                                        bm.getHeight());
+                                destRect = destRect(bm.getWidth(), bm.getHeight());
 
-                                if (transparentBackground) {
-                                    c.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
-                                } else {
-                                    c.drawColor(backgroundColor);
-                                }
+                                c.drawColor(backgroundColor);
 
                                 c.drawBitmap(bm, null, destRect, p);
 
@@ -329,7 +296,7 @@ public class MjpegSurfaceView extends SurfaceView implements SurfaceHolder.Callb
                                         fps = frameCounter + "fps";
                                         frameCounter = 0;
                                         start = System.currentTimeMillis();
-                                        ovl = makeFpsOverlay(overlayPaint, fps);
+                                        ovl = makeFpsOverlay(fpsPaint, fps);
                                     }
                                 }
                             } catch (IOException e) {

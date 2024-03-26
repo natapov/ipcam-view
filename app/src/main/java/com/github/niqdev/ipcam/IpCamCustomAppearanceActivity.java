@@ -74,14 +74,11 @@ public class IpCamCustomAppearanceActivity extends AppCompatActivity {
                 if (((View) mjpegView).getVisibility() == View.VISIBLE) {
                     mjpegView.stopPlayback();
                     mjpegView.clearStream();
-                    mjpegView.resetTransparentBackground();
-
                     ((View) mjpegView).setVisibility(View.GONE);
 
                     item.setIcon(R.drawable.ic_videocam_white_48dp);
                     item.setTitle(getString(R.string.menu_toggleStreamOn));
                 } else {
-                    mjpegView.setTransparentBackground();
                     ((View) mjpegView).setVisibility(View.VISIBLE);
 
                     item.setIcon(R.drawable.ic_videocam_off_white_48dp);
