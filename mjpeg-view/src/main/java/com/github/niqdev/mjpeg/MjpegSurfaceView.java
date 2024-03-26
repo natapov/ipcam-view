@@ -157,7 +157,6 @@ public class MjpegSurfaceView extends SurfaceView implements SurfaceHolder.Callb
             thread.setSurfaceSize(width, height);
         }
     }
-
     public void onSurfaceDestroyed(SurfaceHolder holder) {
         surfaceDone = false;
         stopPlayback();
@@ -186,10 +185,6 @@ public class MjpegSurfaceView extends SurfaceView implements SurfaceHolder.Callb
 
     public void showFps(boolean show) {
         showFps = show;
-    }
-
-    public void flipSource(boolean flip) {
-        flipHorizontal = flip;
     }
 
     public void flipHorizontal(boolean flip) {
@@ -228,11 +223,6 @@ public class MjpegSurfaceView extends SurfaceView implements SurfaceHolder.Callb
         this.overlayTextColor = overlayTextColor;
     }
 
-    @NonNull
-    public SurfaceView getSurfaceView() {
-        return this;
-    }
-
     public void resetTransparentBackground() {
         setZOrderOnTop(false);
         getHolder().setFormat(PixelFormat.OPAQUE);
@@ -268,7 +258,6 @@ public class MjpegSurfaceView extends SurfaceView implements SurfaceHolder.Callb
             thread.start();
         }
     }
-
 
     void resumePlayback() {
         mRun = true;
@@ -483,5 +472,4 @@ public class MjpegSurfaceView extends SurfaceView implements SurfaceHolder.Callb
             }
         }
     }
-
 }
