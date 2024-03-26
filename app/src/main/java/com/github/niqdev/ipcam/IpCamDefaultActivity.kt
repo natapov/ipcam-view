@@ -44,7 +44,6 @@ class IpCamDefaultActivity : AppCompatActivity() {
                         { inputStream: MjpegInputStream ->
                             binding.mjpegViewDefault.setSource(inputStream)
                             binding.mjpegViewDefault.setDisplayMode(calculateDisplayMode())
-                            binding.mjpegViewDefault.showFps(true)
                         }
                 ) { throwable: Throwable ->
                     Log.e(javaClass.simpleName, "mjpeg error", throwable)

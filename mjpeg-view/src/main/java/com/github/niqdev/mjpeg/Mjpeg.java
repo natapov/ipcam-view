@@ -33,7 +33,6 @@ public class Mjpeg {
 
     public Mjpeg() {
     }
-
     /**
      * Configure authentication.
      *

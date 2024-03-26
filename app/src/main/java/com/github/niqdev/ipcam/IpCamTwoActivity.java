@@ -30,12 +30,11 @@ public class IpCamTwoActivity extends AppCompatActivity {
 
     private void loadIpCam1() {
         new Mjpeg()
-                .open("http://50.244.186.65:8081/mjpg/video.mjpg", TIMEOUT)
+                .open("https://app.punyapat.me/mjpeg-server/mjpeg", TIMEOUT)
                 .subscribe(
                         inputStream -> {
                             mjpegView1.setSource(inputStream);
                             mjpegView1.setDisplayMode(MjpegSurfaceView.DisplayMode.BEST_FIT);
-                            mjpegView1.showFps(true);
                         },
                         throwable -> {
                             Log.e(getClass().getSimpleName(), "mjpeg error", throwable);
@@ -45,12 +44,11 @@ public class IpCamTwoActivity extends AppCompatActivity {
 
     private void loadIpCam2() {
         new Mjpeg()
-                .open("http://iris.not.iac.es/axis-cgi/mjpg/video.cgi?resolution=320x240", TIMEOUT)
+                .open("https://app.punyapat.me/mjpeg-server/mjpeg", TIMEOUT)
                 .subscribe(
                         inputStream -> {
                             mjpegView2.setSource(inputStream);
                             mjpegView2.setDisplayMode(MjpegSurfaceView.DisplayMode.BEST_FIT);
-                            mjpegView2.showFps(true);
                         },
                         throwable -> {
                             Log.e(getClass().getSimpleName(), "mjpeg error", throwable);

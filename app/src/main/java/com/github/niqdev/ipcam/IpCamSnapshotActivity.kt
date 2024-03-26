@@ -56,7 +56,6 @@ class IpCamSnapshotActivity : AppCompatActivity() {
                 { inputStream: MjpegInputStream ->
                     binding.mjpegViewSnapshot.setSource(inputStream)
                     binding.mjpegViewSnapshot.setDisplayMode(calculateDisplayMode())
-                    binding.mjpegViewSnapshot.showFps(true)
                 }
             ) { throwable: Throwable ->
                 Log.e(javaClass.simpleName, "mjpeg error", throwable)

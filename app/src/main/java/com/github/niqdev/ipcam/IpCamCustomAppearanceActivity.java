@@ -45,11 +45,9 @@ public class IpCamCustomAppearanceActivity extends AppCompatActivity {
                 .subscribe(
                         inputStream -> {
                             progressWrapper.setVisibility(View.GONE);
-                            mjpegView.setFpsOverlayBackgroundColor(Color.DKGRAY);
-                            mjpegView.setFpsOverlayTextColor(Color.WHITE);
                             mjpegView.setSource(inputStream);
                             mjpegView.setDisplayMode(MjpegSurfaceView.DisplayMode.BEST_FIT);
-                            mjpegView.showFps(true);
+
                         },
                         throwable -> {
                             Log.e(getClass().getSimpleName(), "mjpeg error", throwable);
