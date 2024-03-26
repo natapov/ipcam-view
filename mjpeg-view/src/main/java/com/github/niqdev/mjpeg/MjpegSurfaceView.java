@@ -212,7 +212,12 @@ public class MjpegSurfaceView extends SurfaceView implements SurfaceHolder.Callb
         public void run() {
             long start = System.currentTimeMillis();
             PorterDuffXfermode mode = new PorterDuffXfermode(PorterDuff.Mode.DST_OVER);
-            Bitmap bm;
+            Bitmap bm = null;
+            BitmapFactory.Options options = new BitmapFactory.Options();
+
+            // Set inBitmap to an existing bitmap to reuse its memory
+            options.inMutable = true;
+
             int width;
             int height;
             Rect destRect;
@@ -231,7 +236,11 @@ public class MjpegSurfaceView extends SurfaceView implements SurfaceHolder.Callb
                         synchronized (mSurfaceHolder) {
                             try {
                                 int bytesRead = mIn.readMjpegFrame();
-                                bm = BitmapFactory.decodeByteArray(mIn.frameBuffer, 0, bytesRead);
+                                if(bm != null) {
+                                    options.inBitmap = bm;
+                                }
+                                bm = BitmapFactory.decodeByteArray(mIn.frameBuffer, 0, bytesRead, options);
+
                                 // frameCapturedWithByteData(imageData, header);
                                 frameCapturedWithBitmap(bm);
                                 destRect = destRect(bm.getWidth(), bm.getHeight());
